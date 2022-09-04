@@ -1,4 +1,3 @@
-import Product from '../typeorm/entities/Products';
 import { getCustomRepository } from 'typeorm';
 import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
 import AppError from '@shared/errors/AppError';
@@ -14,7 +13,7 @@ class DeleteProductService {
 		if (!product) {
 			throw new AppError('Producto não encontrado!');
 		}
-		await productRepository.delete(product);
+		await productRepository.remove(product);
 	}
 }
 export default DeleteProductService;
