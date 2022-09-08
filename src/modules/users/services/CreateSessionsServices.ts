@@ -1,5 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
 import UserRepository from '../typeorm/repositories/UserRepository';
@@ -11,13 +12,11 @@ interface IRequest {
 
 interface IResponse {
 	user: User;
+	token: string;
 }
 
 class CreateSessionsServices {
-	public async execute({
-		email,
-		password,
-	}: IRequest): Promise<IResponse | User> {
+	public async execute({ email, password }: IRequest): Promise<IResponse> {
 		const userRepository = getCustomRepository(UserRepository);
 		const user = await userRepository.findByEmail(email);
 
@@ -30,7 +29,15 @@ class CreateSessionsServices {
 			throw new AppError('Verifique as credenciais');
 		}
 
-		return user;
+		const token = sign({}, 'c16d669cfb1cf006c62d63d311a55276', {
+			subject: user.id,
+			expiresIn: '1d',
+		});
+
+		return {
+			user,
+			token,
+		};
 	}
 }
 
