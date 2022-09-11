@@ -7,6 +7,7 @@ class UserController {
 	public async index(req: Request, res: Response): Promise<Response> {
 		const listUSerService = new ListUserService();
 		const user = await listUSerService.execute();
+
 		return res.json(user);
 	}
 

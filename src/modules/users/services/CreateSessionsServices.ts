@@ -1,6 +1,7 @@
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import authConfig from '@config/auth';
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
 import UserRepository from '../typeorm/repositories/UserRepository';
@@ -29,9 +30,9 @@ class CreateSessionsServices {
 			throw new AppError('Verifique as credenciais');
 		}
 
-		const token = sign({}, 'c16d669cfb1cf006c62d63d311a55276', {
+		const token = sign({}, authConfig.jwt.secret, {
 			subject: user.id,
-			expiresIn: '1d',
+			expiresIn: authConfig.jwt.expiresIn,
 		});
 
 		return {
