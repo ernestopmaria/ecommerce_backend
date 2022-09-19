@@ -22,6 +22,7 @@ class ResetPasswordService {
 
 		const user = await userRepository.findById(userToken.user_id);
 
+
 		if (!user) {
 			throw new AppError('Usuário não existe!');
 		}
@@ -32,6 +33,9 @@ class ResetPasswordService {
 			throw new AppError('Token expirado!');
 		}
 		user.password = await hash(password, 10);
+
+		await userRepository.save(user)
+		
 	}
 }
 export default ResetPasswordService;

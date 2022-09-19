@@ -27,7 +27,7 @@ class CreateSessionsServices {
 		const passwordConfirmed = await compare(password, user.password);
 
 		if (!passwordConfirmed) {
-			throw new AppError('Verifique as credenciais');
+			throw new AppError('Verifique as suas credenciais');
 		}
 
 		const token = sign({}, authConfig.jwt.secret, {
