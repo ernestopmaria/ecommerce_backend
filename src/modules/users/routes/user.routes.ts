@@ -5,6 +5,7 @@ import uploadConfig from '@config/upload';
 import UserController from '../controllers/UserController';
 import isAuthenticated from '@shared/http/middlewares/isAuthenticated';
 import UserAvatarController from '../controllers/UserAvatarController';
+import UserProfileController from '../controllers/UserProfileController';
 
 // Routes
 const userRouter = Router();
@@ -12,10 +13,12 @@ const userRouter = Router();
 //Controllers
 const userController = new UserController();
 const userAvatarController = new UserAvatarController();
+const userPerfilController = new UserProfileController();
 
 const upload = multer(uploadConfig);
 
 userRouter.get('/', isAuthenticated, userController.index);
+userRouter.get('/profile', isAuthenticated, userPerfilController.show);
 userRouter.post(
 	'/',
 	celebrate({

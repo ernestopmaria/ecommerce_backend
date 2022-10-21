@@ -7,7 +7,7 @@ class UserTokensRepository extends Repository<UserToken> {
 		const userToken = await this.findOne({
 			where: { token },
 		});
-		return userToken;
+		return userToken; 
 	}
 
 	public async generate(user_id: string): Promise<UserToken > {
