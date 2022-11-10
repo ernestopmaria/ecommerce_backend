@@ -7,16 +7,16 @@ interface IRequest{
 	id:string
 }
 
-class ShowCustomerProfileService {
+class ShowCustomerService {
 	public async execute({id}:IRequest): Promise<Curstomer> {
 		const customerRepository = getCustomRepository(CustomerRepository);
 		const customer = await customerRepository.findById(id);
 
 		if(!customer){
-			throw new AppError('Customer not found')
+			throw new AppError('Cliente não encontrado')
 		}
 		return customer;
 	}
 }
 
-export default ShowCustomerProfileService;
+export default ShowCustomerService;
