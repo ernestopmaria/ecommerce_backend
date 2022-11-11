@@ -1,3 +1,4 @@
+import Order from '@modules/orders/typeorm/entities/Order';
 import {
 	Column,
 	CreateDateColumn,
@@ -7,7 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity('customers')
-class Curstomer {
+class Customer {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
@@ -21,6 +22,6 @@ class Curstomer {
 	created_at: Date;
 
 	@UpdateDateColumn()
-	updated_at: Date
+	updated_at: Date;
 }
-export default Curstomer;
+export default Customer;
