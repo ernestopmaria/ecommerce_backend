@@ -3,6 +3,8 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	JoinColumn,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
@@ -17,6 +19,9 @@ class Customer {
 
 	@Column()
 	email: string;
+
+	@OneToMany(() => Order, order => order.customer)
+	orders: Order[];
 
 	@CreateDateColumn()
 	created_at: Date;

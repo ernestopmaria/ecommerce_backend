@@ -11,8 +11,8 @@ class CustomerRepository extends Repository<Customer> {
 	}
 
 	public async findById(id: string): Promise<Customer | undefined> {
-		const customer = await this.findOne({
-			where: { id },
+		const customer = await this.findOne(id, {
+			relations: ['orders'],
 		});
 		return customer;
 	}
