@@ -1,10 +1,11 @@
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
 import UserRepository from '../typeorm/repositories/UserRepository';
+import sign from 'jsonwebtoken';
 
 interface IRequest {
 	email: string;
@@ -29,9 +30,16 @@ class CreateSessionsServices {
 		if (!passwordConfirmed) {
 			throw new AppError('Verifique as suas credenciais');
 		}
+		const role = user.role;
 
-		const token = sign({}, authConfig.jwt.secret, {
+		const response = {
 			subject: user.id,
+			role: user.role,
+			name: user.name,
+			email: user.email,
+		};
+
+		const token = jwt.sign(response, authConfig.jwt.secret, {
 			expiresIn: authConfig.jwt.expiresIn,
 		});
 

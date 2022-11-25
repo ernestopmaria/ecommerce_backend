@@ -2,13 +2,14 @@ import { Request, Response } from 'express';
 import CreateUSerService from '../services/CreateUserService';
 import ListUserService from '../services/ListUserService';
 import CreateSessionsServices from '../services/CreateSessionsServices';
+import { instanceToInstance } from 'class-transformer';
 
 class UserController {
 	public async index(req: Request, res: Response): Promise<Response> {
 		const listUSerService = new ListUserService();
 		const user = await listUSerService.execute();
 
-		return res.json(user);
+		return res.json(instanceToInstance(user));
 	}
 
 	public async create(req: Request, res: Response): Promise<Response> {
@@ -19,7 +20,7 @@ class UserController {
 			email,
 			password,
 		});
-		return res.json(user);
+		return res.json(instanceToInstance(user));
 	}
 
 	public async sessions(req: Request, res: Response): Promise<Response> {
@@ -29,7 +30,7 @@ class UserController {
 			email,
 			password,
 		});
-		return res.json(user);
+		return res.json(instanceToInstance(user));
 	}
 }
 
