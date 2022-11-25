@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
