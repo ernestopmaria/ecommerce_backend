@@ -7,4 +7,4 @@ docker run -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
 # redis cli
 
 docker exec -it redis sh
-redis cli
+redis-cli

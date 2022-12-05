@@ -4,6 +4,7 @@ import { OrdersRepository } from '../typeorm/repositories/OrdersRepository';
 import { ProductRepository } from '@modules/products/typeorm/repositories/ProductsRepository';
 import CustomerRepository from '@modules/customers/typeorm/repositories/CustomersRepository';
 import AppError from '@shared/errors/AppError';
+import RedisCache from '@shared/cache/RedisCache';
 
 interface IProduct {
 	id: string;
@@ -80,6 +81,10 @@ class CreateOrderService {
 				productExists.filter(p => p.id === product.product_id)[0].quantity -
 				product.quantity,
 		}));
+		const redisCache = new RedisCache();
+
+		await redisCache.invalidate('api-vendas-PRODUCT_LIST');
+		await redisCache.invalidate('api-vendas-ORDER_LIST');
 
 		await productRepository.save(updatedProductQuantity);
 
