@@ -1,12 +1,11 @@
 import { getCustomRepository } from 'typeorm';
 import Order from '../typeorm/entities/Order';
 import { OrdersRepository } from '../typeorm/repositories/OrdersRepository';
-import RedisCache from '@shared/cache/RedisCache';
+import redisCache from '@shared/cache/RedisCache';
 
 class ListOrdersServices {
 	public async execute(): Promise<Order[]> {
 		const orderRepository = getCustomRepository(OrdersRepository);
-		const redisCache = new RedisCache();
 
 		let orders = await redisCache.recover<Order[]>('api-vendas-ORDER_LIST');
 		if (!orders) {
