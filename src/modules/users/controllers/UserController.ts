@@ -13,12 +13,13 @@ class UserController {
 	}
 
 	public async create(req: Request, res: Response): Promise<Response> {
-		const { name, email, password } = req.body;
+		const { name, email, password, role } = req.body;
 		const createUserService = new CreateUSerService();
 		const user = await createUserService.execute({
 			name,
 			email,
 			password,
+			role,
 		});
 		return res.json(instanceToInstance(user));
 	}

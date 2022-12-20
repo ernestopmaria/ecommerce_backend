@@ -43,6 +43,7 @@ node_modules/
 jspm_packages/
 ormconfig.json
 
+
 # TypeScript v1 declaration files
 typings/
 
@@ -105,4 +106,6 @@ dist
 # TernJS port file
 .tern-port
 uploads/*
+temp/*
+!temp/.gitKeep
 !uploads/.gitKeep
