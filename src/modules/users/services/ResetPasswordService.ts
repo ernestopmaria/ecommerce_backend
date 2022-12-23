@@ -2,8 +2,8 @@ import AppError from '@shared/errors/AppError';
 import { isAfter, addHours } from 'date-fns';
 import { hash } from 'bcryptjs';
 import { getCustomRepository } from 'typeorm';
-import UserTokensRepository from '../typeorm/repositories/UserTokensRepository';
-import UserRepository from '../typeorm/repositories/UserRepository';
+import UserTokensRepository from '../infra/typeorm/repositories/UserTokensRepository';
+import UserRepository from '../infra/typeorm/repositories/UserRepository';
 
 interface IRequest {
 	token: string;
@@ -22,7 +22,6 @@ class ResetPasswordService {
 
 		const user = await userRepository.findById(userToken.user_id);
 
-
 		if (!user) {
 			throw new AppError('Usuário não existe!');
 		}
@@ -34,8 +33,7 @@ class ResetPasswordService {
 		}
 		user.password = await hash(password, 10);
 
-		await userRepository.save(user)
-		
+		await userRepository.save(user);
 	}
 }
 export default ResetPasswordService;

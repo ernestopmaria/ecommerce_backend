@@ -1,7 +1,9 @@
 import { getCustomRepository } from 'typeorm';
-import Order from '../typeorm/entities/Order';
-import { OrdersRepository } from '../typeorm/repositories/OrdersRepository';
+
 import redisCache from '@shared/cache/RedisCache';
+
+import { OrdersRepository } from '../infra/typeorm/repositories/OrdersRepository';
+import Order from '../infra/typeorm/entities/Order';
 
 class ListOrdersServices {
 	public async execute(): Promise<Order[]> {

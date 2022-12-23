@@ -4,8 +4,8 @@ import { compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import { getCustomRepository } from 'typeorm';
-import User from '../typeorm/entities/User';
-import UserRepository from '../typeorm/repositories/UserRepository';
+import User from '../infra/typeorm/entities/User';
+import UserRepository from '../infra/typeorm/repositories/UserRepository';
 import sign from 'jsonwebtoken';
 
 interface IRequest {

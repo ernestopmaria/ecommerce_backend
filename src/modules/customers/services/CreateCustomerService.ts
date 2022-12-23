@@ -1,7 +1,7 @@
-import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
-import Curstomer from "../typeorm/entities/Customer";
-import CustomerRepository from "../typeorm/repositories/CustomersRepository";
+import AppError from '@shared/errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import Customer from '../infra/typeorm/entities/Customer';
+import CustomerRepository from '../infra/typeorm/repositories/CustomersRepository';
 
 interface IRequest {
 	name: string;
@@ -9,14 +9,13 @@ interface IRequest {
 }
 
 class CreateCustomerService {
-	public async execute({ name, email,  }: IRequest): Promise<Curstomer> {
+	public async execute({ name, email }: IRequest): Promise<Customer> {
 		const customerRepository = getCustomRepository(CustomerRepository);
 		const emailExists = await customerRepository.findByEmail(email);
 
 		if (emailExists) {
 			throw new AppError('Este email já está em uso');
 		}
-	
 
 		const customer = customerRepository.create({
 			name,

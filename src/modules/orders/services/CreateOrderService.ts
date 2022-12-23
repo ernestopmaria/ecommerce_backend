@@ -1,10 +1,12 @@
 import { getCustomRepository } from 'typeorm';
-import Order from '@modules/orders/typeorm/entities/Order';
-import { OrdersRepository } from '../typeorm/repositories/OrdersRepository';
-import { ProductRepository } from '@modules/products/typeorm/repositories/ProductsRepository';
-import CustomerRepository from '@modules/customers/typeorm/repositories/CustomersRepository';
+
+import { ProductRepository } from '@modules/products/infra/typeorm/repositories/ProductsRepository';
+
 import AppError from '@shared/errors/AppError';
 import redisCache from '@shared/cache/RedisCache';
+import CustomerRepository from '@modules/customers/infra/typeorm/repositories/CustomersRepository';
+import Order from '../infra/typeorm/entities/Order';
+import { OrdersRepository } from '../infra/typeorm/repositories/OrdersRepository';
 
 interface IProduct {
 	id: string;
