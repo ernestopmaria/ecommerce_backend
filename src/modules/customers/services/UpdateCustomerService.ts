@@ -1,7 +1,7 @@
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
 import CustomerRepository from '../infra/typeorm/repositories/CustomersRepository';
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
+import { ICustomer } from '../domain/models/ICustomer';
 
 interface IRequest {
 	id: string;
@@ -15,7 +15,7 @@ class UpdateCustomerService {
 		@inject('CustomerRepository')
 		private customerRepository: CustomerRepository,
 	) {}
-	public async execute({ id, name, email }: IRequest): Promise<Customer> {
+	public async execute({ id, name, email }: IRequest): Promise<ICustomer> {
 		const customer = await this.customerRepository.findById(id);
 
 		if (!customer) {

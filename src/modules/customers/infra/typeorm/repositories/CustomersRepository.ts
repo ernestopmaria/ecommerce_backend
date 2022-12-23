@@ -41,8 +41,8 @@ class CustomerRepository implements ICustomersRepository {
 		return await this.ormRepository.find();
 	}
 
-	public async remove(id: string): Promise<void> {
-		await this.ormRepository.delete(id);
+	public async remove(customer: Customer): Promise<void> {
+		await this.ormRepository.remove(customer);
 	}
 }
 

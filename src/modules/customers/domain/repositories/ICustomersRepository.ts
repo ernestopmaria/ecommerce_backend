@@ -9,5 +9,5 @@ export interface ICustomersRepository {
 	create(data: ICreateCustomer): Promise<ICustomer>;
 	save(customer: ICustomer): Promise<ICustomer>;
 
-	remove(id: string): Promise<void>;
+	remove(customer: ICustomer): Promise<void>;
 }

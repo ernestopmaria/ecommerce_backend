@@ -17,7 +17,7 @@ class DeleteCustomerService {
 		if (!customer) {
 			throw new AppError('Cliente não encontrado ');
 		}
-		await this.customerRepository.remove(id);
+		await this.customerRepository.remove(customer);
 	}
 }
 
