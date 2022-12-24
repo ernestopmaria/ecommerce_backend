@@ -11,7 +11,7 @@ import {
 import Order from './Order';
 
 @Entity('orders_products')
-class OrdersProducts {
+class OrdersProducts implements OrdersProducts {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

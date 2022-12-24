@@ -12,7 +12,11 @@ class CreateOrderService {
 	constructor(
 		@inject('OrdersRepository')
 		private ordersRepository: IOrdersRepository,
+
+		@inject('CustomerRepository')
 		private customerRepository: ICustomersRepository,
+
+		@inject('ProductRepository')
 		private productRepository: IProductsRepository,
 	) {}
 	public async execute({

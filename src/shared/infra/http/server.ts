@@ -1,15 +1,17 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import express, { NextFunction, Request, response, Response } from 'express';
+import '@shared/container';
+import AppError from '@shared/errors/AppError';
+import uploadConfig from '@config/upload';
+import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import { errors } from 'celebrate';
 import routes from './routes';
 import rateLimiter from './middlewares/rateLimiter';
-import AppError from '@shared/errors/AppError';
+
 import '@shared/infra/typeorm';
 import '@shared/container';
-import uploadConfig from '@config/upload';
 
 const app = express();
 app.use(cors());
