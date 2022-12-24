@@ -3,25 +3,25 @@ import User from '../infra/typeorm/entities/User';
 import { getCustomRepository } from 'typeorm';
 import { compare, hash } from 'bcryptjs';
 import UserRepository from '../infra/typeorm/repositories/UserRepository';
+import { IUpdateProfile } from '../domain/models/IUpdateProfile';
+import { IUsersRepository } from '../domain/repositories/IUserRepository';
+import { inject, injectable } from 'tsyringe';
 
-interface IRequest {
-	user_id: string;
-	name: string;
-	email: string;
-	password?: string;
-	old_password?: string;
-}
-
+@injectable()
 class UpdateProfileService {
+	constructor(
+		@inject('UsersRepository')
+		private userRepository: IUsersRepository,
+	) {}
 	public async execute({
 		user_id,
 		name,
 		email,
 		password,
 		old_password,
-	}: IRequest): Promise<User> {
+	}: IUpdateProfile): Promise<User> {
 		const userRepository = getCustomRepository(UserRepository);
-		const user = await userRepository.findById(user_id);
+		const user = await this.userRepository.findById(user_id);
 
 		if (!user) {
 			throw new AppError('Usuario não encontrado');
