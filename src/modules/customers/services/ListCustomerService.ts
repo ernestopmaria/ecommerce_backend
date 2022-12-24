@@ -1,12 +1,12 @@
 import { injectable, inject } from 'tsyringe';
 import { ICustomer } from '../domain/models/ICustomer';
-import CustomerRepository from '../infra/typeorm/repositories/CustomersRepository';
 import redisCache from '@shared/cache/RedisCache';
+import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
 @injectable()
 class ListCustomerService {
 	constructor(
 		@inject('CustomerRepository')
-		private customerRepository: CustomerRepository,
+		private customerRepository: ICustomersRepository,
 	) {}
 	public async execute(): Promise<ICustomer[]> {
 		let customers = await redisCache.recover<ICustomer[]>(

@@ -1,17 +1,17 @@
-import { getCustomRepository } from 'typeorm';
-
 import redisCache from '@shared/cache/RedisCache';
-
-import { OrdersRepository } from '../infra/typeorm/repositories/OrdersRepository';
-import Order from '../infra/typeorm/entities/Order';
-
+import { IOrder } from '../domain/models/IOrder';
+import { inject, injectable } from 'tsyringe';
+import { IOrdersRepository } from '../domain/repositories/IOrdersRepository';
+@injectable()
 class ListOrdersServices {
-	public async execute(): Promise<Order[]> {
-		const orderRepository = getCustomRepository(OrdersRepository);
-
-		let orders = await redisCache.recover<Order[]>('api-vendas-ORDER_LIST');
+	constructor(
+		@inject('OrdersRepository')
+		private ordersRepository: IOrdersRepository,
+	) {}
+	public async execute(): Promise<IOrder[]> {
+		let orders = await redisCache.recover<IOrder[]>('api-vendas-ORDER_LIST');
 		if (!orders) {
-			orders = await orderRepository.find();
+			orders = await this.ordersRepository.findAll();
 			await redisCache.save('api-vendas-ORDER_LIST', orders);
 		}
 

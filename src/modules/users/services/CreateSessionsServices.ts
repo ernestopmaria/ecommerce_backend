@@ -3,25 +3,24 @@ import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
-import { getCustomRepository } from 'typeorm';
-import User from '../infra/typeorm/entities/User';
-import UserRepository from '../infra/typeorm/repositories/UserRepository';
-import sign from 'jsonwebtoken';
+import { inject, injectable } from 'tsyringe';
+import { IUsersRepository } from '../domain/repositories/IUserRepository';
+import { ICreateSession } from '../domain/models/ICreateSession';
+//import sign from 'jsonwebtoken';
+import { IUserAuthenticated } from '../domain/models/IUserAuthenticated';
 
-interface IRequest {
-	email: string;
-	password: string;
-}
-
-interface IResponse {
-	user: User;
-	token: string;
-}
-
+@injectable()
 class CreateSessionsServices {
-	public async execute({ email, password }: IRequest): Promise<IResponse> {
-		const userRepository = getCustomRepository(UserRepository);
-		const user = await userRepository.findByEmail(email);
+	constructor(
+		@inject('UserRepository')
+		private userRepository: IUsersRepository /* @inject('HashProvider')
+		private hashProvider: IHashProvider, */,
+	) {}
+	public async execute({
+		email,
+		password,
+	}: ICreateSession): Promise<IUserAuthenticated> {
+		const user = await this.userRepository.findByEmail(email);
 
 		if (!user) {
 			throw new AppError('Verifique as credenciais');
@@ -31,7 +30,6 @@ class CreateSessionsServices {
 		if (!passwordConfirmed) {
 			throw new AppError('Verifique as suas credenciais');
 		}
-		const role = user.role;
 
 		const response = {
 			subject: user.id,

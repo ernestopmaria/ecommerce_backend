@@ -5,17 +5,20 @@ import uploadConfig from '@config/upload';
 import UserController from '../controllers/UserController';
 import isAuthenticated from '@shared/infra/http/middlewares/isAuthenticated';
 import UserAvatarController from '../controllers/UserAvatarController';
+import SessionsController from '../controllers/SessionsController';
 
 // Routes
 const userRouter = Router();
 
 //Controllers
+const sessionController = new SessionsController();
 const userController = new UserController();
 const userAvatarController = new UserAvatarController();
 
 const upload = multer(uploadConfig.multer);
 
 userRouter.get('/', isAuthenticated, userController.index);
+userRouter.get('/:id', isAuthenticated, userController.show);
 
 userRouter.post(
 	'/',
@@ -38,7 +41,7 @@ userRouter.post(
 			password: Joi.string().required(),
 		},
 	}),
-	userController.sessions,
+	sessionController.sessions,
 );
 
 userRouter.patch(

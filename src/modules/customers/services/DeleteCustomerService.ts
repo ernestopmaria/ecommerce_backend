@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
-import CustomerRepository from '../infra/typeorm/repositories/CustomersRepository';
+import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
 
 interface IRequest {
 	id: string;
@@ -9,7 +9,7 @@ interface IRequest {
 class DeleteCustomerService {
 	constructor(
 		@inject('CustomerRepository')
-		private customerRepository: CustomerRepository,
+		private customerRepository: ICustomersRepository,
 	) {}
 	public async execute({ id }: IRequest): Promise<void> {
 		const customer = await this.customerRepository.findById(id);

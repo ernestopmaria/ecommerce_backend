@@ -2,25 +2,26 @@ import CreateOrderService from '@modules/orders/services/CreateOrderService';
 import ListOrdersServices from '@modules/orders/services/ListOrdersService';
 import ShowOrderService from '@modules/orders/services/ShowOrderService';
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
 export default class OrdersController {
 	public async index(req: Request, res: Response): Promise<Response> {
-		const listOrderService = new ListOrdersServices();
-		const orders = await listOrderService.execute();
+		const listOrders = container.resolve(ListOrdersServices);
+		const orders = await listOrders.execute();
 		return res.json(orders);
 	}
 
 	public async show(req: Request, res: Response): Promise<Response> {
 		const { id } = req.params;
-		const showOrderService = new ShowOrderService();
-		const order = await showOrderService.execute({ id });
+		const showOrder = container.resolve(ShowOrderService);
+		const order = await showOrder.execute({ id });
 		return res.json(order);
 	}
 
 	public async create(req: Request, res: Response): Promise<Response> {
 		const { customer_id, products } = req.body;
-		const createOrderService = new CreateOrderService();
-		const order = await createOrderService.execute({
+		const createOrder = container.resolve(CreateOrderService);
+		const order = await createOrder.execute({
 			customer_id,
 			products,
 		});

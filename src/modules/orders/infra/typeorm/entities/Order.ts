@@ -1,5 +1,6 @@
 import OrdersProducts from './OrdersProducts';
 import {
+	Column,
 	CreateDateColumn,
 	Entity,
 	JoinColumn,
@@ -14,6 +15,9 @@ import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 class Order {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
+
+	@Column('int')
+	order: number;
 
 	@ManyToOne(() => Customer, customer => customer.orders)
 	@JoinColumn({ name: 'customer_id' })
