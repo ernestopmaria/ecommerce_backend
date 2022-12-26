@@ -3,7 +3,7 @@ import { ICustomersRepository } from '@modules/customers/domain/repositories/ICu
 import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 import { randomUUID } from 'node:crypto';
 
-class CustomerRepository implements ICustomersRepository {
+class FakeCustomerRepository implements ICustomersRepository {
 	private customers: Customer[] = [];
 
 	public async create({ name, email }: ICreateCustomer): Promise<Customer> {
@@ -43,4 +43,4 @@ class CustomerRepository implements ICustomersRepository {
 	}
 }
 
-export default CustomerRepository;
+export default FakeCustomerRepository;
