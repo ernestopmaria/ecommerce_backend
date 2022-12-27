@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import AppError from '@shared/errors/AppError';
-import { compare } from 'bcryptjs';
+
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import { inject, injectable } from 'tsyringe';
@@ -8,13 +8,15 @@ import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { ICreateSession } from '../domain/models/ICreateSession';
 //import sign from 'jsonwebtoken';
 import { IUserAuthenticated } from '../domain/models/IUserAuthenticated';
+import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 @injectable()
 class CreateSessionsServices {
 	constructor(
 		@inject('UserRepository')
-		private userRepository: IUsersRepository /* @inject('HashProvider')
-		private hashProvider: IHashProvider, */,
+		private userRepository: IUsersRepository,
+		@inject('HashProvider')
+		private hashProvider: IHashProvider,
 	) {}
 	public async execute({
 		email,
@@ -25,7 +27,10 @@ class CreateSessionsServices {
 		if (!user) {
 			throw new AppError('Verifique as credenciais');
 		}
-		const passwordConfirmed = await compare(password, user.password);
+		const passwordConfirmed = await this.hashProvider.compareHash(
+			password,
+			user.password,
+		);
 
 		if (!passwordConfirmed) {
 			throw new AppError('Verifique as suas credenciais');

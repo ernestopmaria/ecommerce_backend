@@ -1,18 +1,18 @@
 import AppError from '@shared/errors/AppError';
-import { hash } from 'bcryptjs';
 import { IUser } from '../domain/models/IUser';
 import { ICreateUser } from '../domain/models/ICreateUser';
 import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../domain/repositories/IUserRepository';
+import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 @injectable()
 class CreateUSerService {
 	constructor(
 		@inject('UserRepository')
 		private userRepository: IUsersRepository,
-	) /* 	@inject('HashProvider')
-		private hashProvider: IHashProvider, */
-	{}
+		@inject('HashProvider')
+		private hashProvider: IHashProvider,
+	) {}
 
 	public async execute({
 		name,
@@ -26,7 +26,7 @@ class CreateUSerService {
 			throw new AppError('Este email já está em uso');
 		}
 		const roleDefault = 'user';
-		const passwordHashed = await hash(password, 10);
+		const passwordHashed = await this.hashProvider.generateHash(password);
 		if (!role) {
 			role = roleDefault;
 		}
