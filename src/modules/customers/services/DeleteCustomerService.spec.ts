@@ -24,4 +24,14 @@ describe('Create customer', () => {
 			return fakeCustomerRepository.find();
 		}).toHaveLength(0);
 	});
+
+	it('should throw when not exist customer', async () => {
+		await fakeCustomerRepository.create({
+			name: 'Ernesto',
+			email: 'ernestomaria93@gmail.com',
+		});
+		const id = '54ab7597-95d7-4dec-948d-teste7dce37399d72';
+
+		expect(deleteService.execute({ id })).rejects.toBeInstanceOf(AppError);
+	});
 });
