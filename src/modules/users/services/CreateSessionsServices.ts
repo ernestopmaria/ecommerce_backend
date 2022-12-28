@@ -1,14 +1,11 @@
 import 'dotenv/config';
 import AppError from '@shared/errors/AppError';
-
-import jwt from 'jsonwebtoken';
-import authConfig from '@config/auth';
 import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { ICreateSession } from '../domain/models/ICreateSession';
-//import sign from 'jsonwebtoken';
 import { IUserAuthenticated } from '../domain/models/IUserAuthenticated';
 import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
+import { ITokenProvider } from '../providers/TokenProvider/models/ITokenProvider';
 
 @injectable()
 class CreateSessionsServices {
@@ -17,6 +14,8 @@ class CreateSessionsServices {
 		private userRepository: IUsersRepository,
 		@inject('HashProvider')
 		private hashProvider: IHashProvider,
+		@inject('TokenProvider')
+		private tokenProvider: ITokenProvider,
 	) {}
 	public async execute({
 		email,
@@ -43,9 +42,7 @@ class CreateSessionsServices {
 			email: user.email,
 		};
 
-		const token = jwt.sign(response, authConfig.jwt.secret, {
-			expiresIn: authConfig.jwt.expiresIn,
-		});
+		const token = await this.tokenProvider.sign(response);
 
 		return {
 			user,

@@ -3,17 +3,15 @@ import CreateCustomerService from './CreateCustomerService';
 import AppError from '@shared/errors/AppError';
 
 let fakeCustomerRepository: FakeCustomerRepository;
-let customerRepositoryService: CreateCustomerService;
+let customerService: CreateCustomerService;
 
 describe('Create customer', () => {
 	beforeEach(() => {
 		fakeCustomerRepository = new FakeCustomerRepository();
-		customerRepositoryService = new CreateCustomerService(
-			fakeCustomerRepository,
-		);
+		customerService = new CreateCustomerService(fakeCustomerRepository);
 	});
 	it('should  be able to create a new customer', async () => {
-		const customer = await customerRepositoryService.execute({
+		const customer = await customerService.execute({
 			name: 'Ernesto',
 			email: 'ernestomaria93@gmail.com',
 		});
@@ -22,12 +20,12 @@ describe('Create customer', () => {
 	});
 
 	it('should not be able to create a customer with exist email', async () => {
-		await customerRepositoryService.execute({
+		await customerService.execute({
 			name: 'Ernesto',
 			email: 'ernestomaria93@gmail.com',
 		}),
 			expect(
-				customerRepositoryService.execute({
+				customerService.execute({
 					name: 'Ernesto',
 					email: 'ernestomaria93@gmail.com',
 				}),

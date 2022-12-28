@@ -2,7 +2,6 @@ import AppError from '@shared/errors/AppError';
 import { ICreateCustomer } from '../domain/models/ICreateCustomer';
 import { injectable, inject } from 'tsyringe';
 import { ICustomer } from '../domain/models/ICustomer';
-import CustomerRepository from '../infra/typeorm/repositories/CustomersRepository';
 import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
 
 @injectable()

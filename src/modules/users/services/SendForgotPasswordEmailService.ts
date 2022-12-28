@@ -11,7 +11,7 @@ import { IUserTokensRepository } from '../domain/repositories/IUserTokensReposit
 @injectable()
 class SendForgotPasswordEmailService {
 	constructor(
-		@inject('UsersRepository')
+		@inject('UserRepository')
 		private userRepository: IUsersRepository,
 
 		@inject('UserTokensRepository')

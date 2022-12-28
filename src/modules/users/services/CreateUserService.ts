@@ -6,7 +6,7 @@ import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 @injectable()
-class CreateUSerService {
+class CreateUserService {
 	constructor(
 		@inject('UserRepository')
 		private userRepository: IUsersRepository,
@@ -41,4 +41,4 @@ class CreateUSerService {
 		return user;
 	}
 }
-export default CreateUSerService;
+export default CreateUserService;
