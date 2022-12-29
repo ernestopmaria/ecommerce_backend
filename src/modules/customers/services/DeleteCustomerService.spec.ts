@@ -25,7 +25,7 @@ describe('Create customer', () => {
 		}).toHaveLength(0);
 	});
 
-	it('should throw when not exist customer', async () => {
+	it('should throw when not exist customer to delete', async () => {
 		await fakeCustomerRepository.create({
 			name: 'Ernesto',
 			email: 'ernestomaria93@gmail.com',
