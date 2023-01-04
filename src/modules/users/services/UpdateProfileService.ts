@@ -10,7 +10,7 @@ import { inject, injectable } from 'tsyringe';
 @injectable()
 class UpdateProfileService {
 	constructor(
-		@inject('UsersRepository')
+		@inject('UserRepository')
 		private userRepository: IUsersRepository,
 	) {}
 	public async execute({
@@ -20,14 +20,13 @@ class UpdateProfileService {
 		password,
 		old_password,
 	}: IUpdateProfile): Promise<User> {
-		const userRepository = getCustomRepository(UserRepository);
 		const user = await this.userRepository.findById(user_id);
 
 		if (!user) {
 			throw new AppError('Usuario não encontrado');
 		}
 
-		const userUpdateEmail = await userRepository.findByEmail(email);
+		const userUpdateEmail = await this.userRepository.findByEmail(email);
 
 		if (userUpdateEmail && userUpdateEmail.id !== user_id) {
 			throw new AppError('Este email já está em uso');
@@ -48,7 +47,7 @@ class UpdateProfileService {
 		user.name = name;
 		user.email = email;
 
-		await userRepository.save(user);
+		await this.userRepository.save(user);
 
 		return user;
 	}

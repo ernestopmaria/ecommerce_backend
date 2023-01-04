@@ -1,15 +1,18 @@
 import AppError from '@shared/errors/AppError';
-import redisCache from '@shared/cache/RedisCache';
+import redisCache from '@shared/cache/RedisCacheProvider/implementations/RedisCache';
 import { injectable, inject } from 'tsyringe';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { IUpdateProduct } from '../domain/models/IUpdateProduct';
 import { IProduct } from '../domain/models/IProduct';
+import { IRedisProvider } from '@shared/cache/RedisCacheProvider/models/IRedisCache';
 
 @injectable()
 class UpdateProductService {
 	constructor(
 		@inject('ProductRepository')
 		private productRepository: IProductsRepository,
+		@inject('RedisCache')
+		private redisCache: IRedisProvider,
 	) {}
 	public async execute({
 		id,
@@ -27,7 +30,7 @@ class UpdateProductService {
 			throw new AppError('Já existe um producto com este nome');
 		}
 
-		await redisCache.invalidate('api-vendas-PRODUCT_LIST');
+		await this.redisCache.invalidate('api-vendas-PRODUCT_LIST');
 		(product.name = name),
 			(product.price = price),
 			(product.quantity = quantity);

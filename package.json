@@ -61,6 +61,6 @@
     "redis": "^4.5.1",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.7.0",
-    "typeorm": "0.2.29"
+    "typeorm": "^0.3.11"
   }
 }

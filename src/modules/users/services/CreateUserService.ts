@@ -4,6 +4,7 @@ import { ICreateUser } from '../domain/models/ICreateUser';
 import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
+import { IRedisProvider } from '@shared/cache/RedisCacheProvider/models/IRedisCache';
 
 @injectable()
 class CreateUserService {
@@ -12,6 +13,9 @@ class CreateUserService {
 		private userRepository: IUsersRepository,
 		@inject('HashProvider')
 		private hashProvider: IHashProvider,
+
+		@inject('RedisCache')
+		private redisCache: IRedisProvider,
 	) {}
 
 	public async execute({
@@ -37,6 +41,7 @@ class CreateUserService {
 			password: passwordHashed,
 			role,
 		});
+		await this.redisCache.invalidate('api-vendas-USER_LIST');
 
 		return user;
 	}

@@ -1,6 +1,9 @@
+import { SearchParams } from '@modules/customers/domain/repositories/ICustomersRepository';
 import { ICreateProduct } from '@modules/products/domain/models/ICreateProduct';
+import { IProductPaginate } from '@modules/products/domain/models/IProductPaginate';
 import { IUpdateStockProduct } from '@modules/products/domain/models/IUpdateStockProduct';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import { dataSource } from '@shared/infra/typeorm';
 import { getRepository, In, Repository } from 'typeorm';
 import Product from '../entities/Products';
 
@@ -11,7 +14,7 @@ interface IFindProducts {
 export class ProductRepository implements IProductsRepository {
 	private ormRepository: Repository<Product>;
 	constructor() {
-		this.ormRepository = getRepository(Product);
+		this.ormRepository = dataSource.getRepository(Product);
 	}
 	public async create({
 		name,
@@ -39,8 +42,8 @@ export class ProductRepository implements IProductsRepository {
 		await this.ormRepository.save(products);
 	}
 
-	public async findByName(name: string): Promise<Product | undefined> {
-		const product = await this.ormRepository.findOne({
+	public async findByName(name: string): Promise<Product | null> {
+		const product = await this.ormRepository.findOneBy({
 			name,
 		});
 
@@ -59,14 +62,29 @@ export class ProductRepository implements IProductsRepository {
 		return existsProducts;
 	}
 
-	public async findById(id: string): Promise<Product | undefined> {
-		const product = await this.ormRepository.findOne({ id });
+	public async findById(id: string): Promise<Product | null> {
+		const product = await this.ormRepository.findOneBy({ id });
 
 		return product;
 	}
 
-	public async findAll(): Promise<Product[]> {
-		const result = await this.ormRepository.find();
+	public async findAll({
+		page,
+		skip,
+		take,
+	}: SearchParams): Promise<IProductPaginate> {
+		const [products, count] = await this.ormRepository
+			.createQueryBuilder()
+			.skip(skip)
+			.take(take)
+			.getManyAndCount();
+
+		const result = {
+			per_page: take,
+			total: count,
+			current_page: page,
+			data: products,
+		};
 
 		return result;
 	}

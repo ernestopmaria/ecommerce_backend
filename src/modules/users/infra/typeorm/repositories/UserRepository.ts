@@ -2,12 +2,13 @@ import { Repository, getRepository } from 'typeorm';
 import User from '../entities/User';
 import { IUsersRepository } from '../../../domain/repositories/IUserRepository';
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
+import { dataSource } from '../../../../../shared/infra/typeorm/index';
 
 class UserRepository implements IUsersRepository {
 	private ormRepository: Repository<User>;
 
 	constructor() {
-		this.ormRepository = getRepository(User);
+		this.ormRepository = dataSource.getRepository(User);
 	}
 
 	public async create({
@@ -35,21 +36,21 @@ class UserRepository implements IUsersRepository {
 		return result;
 	}
 
-	public async findByName(name: string): Promise<User | undefined> {
+	public async findByName(name: string): Promise<User | null> {
 		const user = await this.ormRepository.findOne({
 			where: { name },
 		});
 		return user;
 	}
 
-	public async findById(id: string): Promise<User | undefined> {
+	public async findById(id: string): Promise<User | null> {
 		const user = await this.ormRepository.findOne({
 			where: { id },
 		});
 		return user;
 	}
 
-	public async findByEmail(email: string): Promise<User | undefined> {
+	public async findByEmail(email: string): Promise<User | null> {
 		const user = await this.ormRepository.findOne({
 			where: { email },
 		});

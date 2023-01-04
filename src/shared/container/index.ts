@@ -11,6 +11,8 @@ import { IUserTokensRepository } from '@modules/users/domain/repositories/IUserT
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 
 import '@modules/users/providers';
+import RedisCache from '../cache/RedisCacheProvider/implementations/RedisCache';
+import { IRedisProvider } from '@shared/cache/RedisCacheProvider/models/IRedisCache';
 
 container.registerSingleton<ICustomersRepository>(
 	'CustomerRepository',
@@ -32,3 +34,5 @@ container.registerSingleton<IUserTokensRepository>(
 	'UserTokensRepository',
 	UserTokensRepository,
 );
+
+container.registerSingleton<IRedisProvider>('RedisCache', RedisCache);

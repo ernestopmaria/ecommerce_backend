@@ -1,11 +1,11 @@
 import AppError from '@shared/errors/AppError';
-import redisCache from '@shared/cache/RedisCache';
 import { inject, injectable } from 'tsyringe';
 import { IRequestCreateOrder } from '../domain/models/IRequestCreateOrder';
 import { IOrder } from '../domain/models/IOrder';
 import { IOrdersRepository } from '../domain/repositories/IOrdersRepository';
 import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import { IRedisProvider } from '@shared/cache/RedisCacheProvider/models/IRedisCache';
 
 @injectable()
 class CreateOrderService {
@@ -18,6 +18,9 @@ class CreateOrderService {
 
 		@inject('ProductRepository')
 		private productRepository: IProductsRepository,
+
+		@inject('RedisCache')
+		private redisCache: IRedisProvider,
 	) {}
 	public async execute({
 		customer_id,
@@ -83,8 +86,8 @@ class CreateOrderService {
 				product.quantity,
 		}));
 
-		await redisCache.invalidate('api-vendas-PRODUCT_LIST');
-		await redisCache.invalidate('api-vendas-ORDER_LIST');
+		await this.redisCache.invalidate('api-vendas-PRODUCT_LIST');
+		await this.redisCache.invalidate('api-vendas-ORDER_LIST');
 
 		await this.productRepository.updateStock(updatedProductQuantity);
 

@@ -2,9 +2,7 @@ import { IUpdateUserAvatar } from './../domain/models/IUpdateUserAvatar';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 
-import { getCustomRepository } from 'typeorm';
 import User from '../infra/typeorm/entities/User';
-import UserRepository from '../infra/typeorm/repositories/UserRepository';
 
 import DiskStorageProvider from '@shared/providers/StorageProvider/DiskStorageProvider';
 import S3StorageProvider from '@shared/providers/StorageProvider/S3StorageProvider';
@@ -14,7 +12,7 @@ import { IUsersRepository } from '../domain/repositories/IUserRepository';
 @injectable()
 class UpdateUserAvatarServices {
 	constructor(
-		@inject('UsersRepository')
+		@inject('UserRepository')
 		private userRepository: IUsersRepository,
 	) {}
 	public async execute({

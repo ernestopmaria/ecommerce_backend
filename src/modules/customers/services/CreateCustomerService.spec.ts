@@ -1,14 +1,21 @@
 import FakeCustomerRepository from '../domain/repositories/fakes/FakeCustomersRepository';
 import CreateCustomerService from './CreateCustomerService';
 import AppError from '@shared/errors/AppError';
+import FakeRedisCache from '@shared/cache/RedisCacheProvider/fakes/FakeRedisCache';
 
 let fakeCustomerRepository: FakeCustomerRepository;
 let customerService: CreateCustomerService;
+let fakeRediscache: FakeRedisCache;
 
 describe('Create customer', () => {
 	beforeEach(() => {
 		fakeCustomerRepository = new FakeCustomerRepository();
-		customerService = new CreateCustomerService(fakeCustomerRepository);
+		fakeRediscache = new FakeRedisCache();
+
+		customerService = new CreateCustomerService(
+			fakeCustomerRepository,
+			fakeRediscache,
+		);
 	});
 	it('should  be able to create a new customer', async () => {
 		const customer = await customerService.execute({

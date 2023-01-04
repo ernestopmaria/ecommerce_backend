@@ -42,6 +42,7 @@ build/Release
 node_modules/
 jspm_packages/
 ormconfig.json
+.docker/dbdata
 
 
 # TypeScript v1 declaration files

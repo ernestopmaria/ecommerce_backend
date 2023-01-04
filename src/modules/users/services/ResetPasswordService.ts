@@ -9,7 +9,7 @@ import { IResetPassword } from '../domain/models/IResetPassword';
 @injectable()
 class ResetPasswordService {
 	constructor(
-		@inject('UsersRepository')
+		@inject('UserRepository')
 		private userRepository: IUsersRepository,
 
 		@inject('UserTokensRepository')

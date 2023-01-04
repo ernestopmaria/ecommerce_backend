@@ -6,8 +6,10 @@ import { container } from 'tsyringe';
 
 export default class OrdersController {
 	public async index(req: Request, res: Response): Promise<Response> {
+		const page = req.query.page ? Number(req.query.page) : 1;
+		const limit = req.query.limit ? Number(req.query.limit) : 15;
 		const listOrders = container.resolve(ListOrdersServices);
-		const orders = await listOrders.execute();
+		const orders = await listOrders.execute({ page, limit });
 		return res.json(orders);
 	}
 

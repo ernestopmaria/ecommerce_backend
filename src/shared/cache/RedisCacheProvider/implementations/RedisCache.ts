@@ -1,7 +1,8 @@
 import Redis, { Redis as RedisClient } from 'ioredis';
 import cacheConfig from '@config/cache';
+import { IRedisProvider } from '../models/IRedisCache';
 
-class RedisCache {
+export default class RedisCache implements IRedisProvider {
 	private client: RedisClient;
 	private connected = false;
 
@@ -29,4 +30,3 @@ class RedisCache {
 		await this.client.del(key);
 	}
 }
-export default new RedisCache();

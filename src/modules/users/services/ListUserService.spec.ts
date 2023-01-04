@@ -1,14 +1,16 @@
+import FakeRedisCache from '@shared/cache/RedisCacheProvider/fakes/FakeRedisCache';
 import FakeUsersRepository from '../domain/repositories/fakes/FakeUserRepository';
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import ListUserService from './ListUserService';
 
 let fakeUserRepository: FakeUsersRepository;
 let listUser: ListUserService;
+let fakeRediscache: FakeRedisCache;
 
 describe('Create User', () => {
 	beforeEach(async () => {
 		fakeUserRepository = new FakeUsersRepository();
-		listUser = new ListUserService(fakeUserRepository);
+		fakeRediscache = new FakeRedisCache();
+		listUser = new ListUserService(fakeUserRepository, fakeRediscache);
 
 		await fakeUserRepository.create({
 			name: 'Ernesto',

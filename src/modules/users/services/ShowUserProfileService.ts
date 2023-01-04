@@ -8,7 +8,7 @@ import User from '../infra/typeorm/entities/User';
 @injectable()
 class ShowUserProfileService {
 	constructor(
-		@inject('UsersRepository')
+		@inject('UserRepository')
 		private userRepository: IUsersRepository,
 	) {}
 	public async execute({ id }: IShowUser): Promise<User> {
