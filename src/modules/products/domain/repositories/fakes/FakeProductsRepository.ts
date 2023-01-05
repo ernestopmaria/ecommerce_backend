@@ -15,7 +15,7 @@ export default class FakeProductsRepository implements IProductsRepository {
 		const products = new Product();
 		products.id = randomUUID();
 		(products.name = data.name), (products.quantity = data.quantity);
-
+		this.products.push(products);
 		return products;
 	}
 	public async findByName(name: string): Promise<IProduct | null> {
@@ -25,7 +25,7 @@ export default class FakeProductsRepository implements IProductsRepository {
 	public async findById(id: string): Promise<IProduct | null> {
 		return this.products.find(c => c.id === id) as unknown as null;
 	}
-	findAll({ page, skip, take }: SearchParams): Promise<IProductPaginate> {
+	async findAll({ page, skip, take }: SearchParams): Promise<IProductPaginate> {
 		const result = {
 			per_page: take,
 			total: 1,
@@ -34,17 +34,17 @@ export default class FakeProductsRepository implements IProductsRepository {
 		};
 		return result;
 	}
-	findAllByIds(products: IFindProducts[]): Promise<IProduct[]> {
-		const product = this.products.find(products);
+	async findAllByIds(products: IFindProducts[]): Promise<IProduct[]> {
+		const product = this.products.includes(products);
 		return product;
 	}
-	save(product: IProduct): Promise<IProduct> {
+	async save(product: IProduct): Promise<IProduct> {
 		throw new Error('Method not implemented.');
 	}
-	updateStock(products: IUpdateStockProduct[]): Promise<void> {
+	async updateStock(products: IUpdateStockProduct[]): Promise<void> {
 		throw new Error('Method not implemented.');
 	}
-	remove(product: IProduct): Promise<void> {
+	async remove(product: IProduct): Promise<void> {
 		const productIndex = this.products.findIndex(e => e.id === product.id);
 		this.products.splice(productIndex, 1);
 	}

@@ -1,9 +1,8 @@
-import { getCustomRepository } from 'typeorm';
-import { ProductRepository } from '../infra/typeorm/repositories/ProductsRepository';
+import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import redisCache from '@shared/cache/RedisCacheProvider/implementations/RedisCache';
+
 import { IDeleteProduct } from '../domain/models/IDeleteProduct';
-import { inject, injectable } from 'tsyringe';
+
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { IRedisProvider } from '@shared/cache/RedisCacheProvider/models/IRedisCache';
 
@@ -21,8 +20,8 @@ class DeleteProductService {
 			throw new AppError('Producto não encontrado!');
 		}
 
-		await this.redisCache.invalidate('api-vendas-PRODUCT_LIST');
 		await this.productsRepository.remove(product);
+		await this.redisCache.invalidate('api-vendas-PRODUCT_LIST');
 	}
 }
 export default DeleteProductService;

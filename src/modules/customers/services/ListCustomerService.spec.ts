@@ -23,7 +23,7 @@ describe('List customer', () => {
 			name: 'Ernesto',
 			email: 'ernestomaria93@gmail.com',
 		});
-		const customer = await customerService.execute({ page, limit });
-		expect(customer).toHaveProperty('data');
+		const customer = (await customerService.execute({ page, limit })).data;
+		expect(customer).toHaveLength(1);
 	});
 });

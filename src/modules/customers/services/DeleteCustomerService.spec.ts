@@ -17,12 +17,14 @@ describe('Create customer', () => {
 			email: 'ernestomaria93@gmail.com',
 		});
 		const id = customer.id;
-
+		const page = 1;
+		const skip = 1;
+		const take = 15;
 		await deleteService.execute({ id });
 
-		expect(() => {
-			return fakeCustomerRepository.find();
-		}).toHaveLength(0);
+		expect(
+			(await fakeCustomerRepository.findAll({ page, skip, take })).data,
+		).toHaveLength(0);
 	});
 
 	it('should throw when not exist customer to delete', async () => {

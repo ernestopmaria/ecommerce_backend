@@ -1,6 +1,7 @@
 import FakeRedisCache from '@shared/cache/RedisCacheProvider/fakes/FakeRedisCache';
 import FakeProductsRepository from '../domain/repositories/fakes/FakeProductsRepository';
 import CreateProductService from '@modules/products/services/CreateProductService';
+import AppError from '@shared/errors/AppError';
 
 let fakeProductsRepository: FakeProductsRepository;
 let fakeRedisCache: FakeRedisCache;
@@ -23,5 +24,20 @@ describe('Create a product', () => {
 		});
 
 		expect(products).toHaveProperty('id');
+	});
+	it('should  not be able to create a new product with exists name', async () => {
+		await productService.execute({
+			name: 'ernesto',
+			price: 2500,
+			quantity: 12,
+		});
+
+		expect(
+			productService.execute({
+				name: 'ernesto',
+				price: 2800,
+				quantity: 11,
+			}),
+		).rejects.toBeInstanceOf(AppError);
 	});
 });

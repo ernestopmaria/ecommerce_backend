@@ -1,4 +1,3 @@
-import redisCache from '@shared/cache/RedisCacheProvider/implementations/RedisCache';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import { IProduct } from '../domain/models/IProduct';
