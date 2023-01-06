@@ -1,8 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import User from '../infra/typeorm/entities/User';
-import { getCustomRepository } from 'typeorm';
 import { compare, hash } from 'bcryptjs';
-import UserRepository from '../infra/typeorm/repositories/UserRepository';
 import { IUpdateProfile } from '../domain/models/IUpdateProfile';
 import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { inject, injectable } from 'tsyringe';

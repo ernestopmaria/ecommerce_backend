@@ -6,7 +6,7 @@ let fakeUserRepository: FakeUsersRepository;
 let listUser: ListUserService;
 let fakeRediscache: FakeRedisCache;
 
-describe('Create User', () => {
+describe('List User', () => {
 	beforeEach(async () => {
 		fakeUserRepository = new FakeUsersRepository();
 		fakeRediscache = new FakeRedisCache();

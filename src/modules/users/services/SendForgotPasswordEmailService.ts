@@ -7,6 +7,7 @@ import { ISendForgotPasswordEmail } from '../domain/models/ISendForgotPasswordEm
 import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { IUserTokensRepository } from '../domain/repositories/IUserTokensRepository';
+import { IUser } from '../domain/models/IUser';
 
 @injectable()
 class SendForgotPasswordEmailService {
@@ -17,7 +18,7 @@ class SendForgotPasswordEmailService {
 		@inject('UserTokensRepository')
 		private userTokensRepository: IUserTokensRepository,
 	) {}
-	public async execute({ email }: ISendForgotPasswordEmail): Promise<void> {
+	public async execute({ email }: ISendForgotPasswordEmail): Promise<IUser> {
 		const user = await this.userRepository.findByEmail(email);
 		if (!user) {
 			throw new AppError('Usuário não existe!');
@@ -47,7 +48,6 @@ class SendForgotPasswordEmailService {
 					},
 				},
 			});
-			return;
 		}
 		await EtherealMail.sendMail({
 			to: {
@@ -64,6 +64,7 @@ class SendForgotPasswordEmailService {
 				},
 			},
 		});
+		return user;
 	}
 }
 export default SendForgotPasswordEmailService;

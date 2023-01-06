@@ -54,14 +54,14 @@ describe('Update product', () => {
 			quantity: 20,
 		});
 
-		const updatedCustomer = {
+		const updatedProduct = {
 			id: product.id,
 			name: 'Sabonete2',
 			price: 12,
 			quantity: 20,
 		};
 
-		expect(productService.execute(updatedCustomer)).rejects.toBeInstanceOf(
+		expect(productService.execute(updatedProduct)).rejects.toBeInstanceOf(
 			AppError,
 		);
 	});
