@@ -9,7 +9,7 @@ import { randomUUID } from 'node:crypto';
 import { SearchParams } from '@modules/customers/domain/repositories/ICustomersRepository';
 
 export default class FakeProductsRepository implements IProductsRepository {
-	public products: Product[] = [];
+	public products: IProduct[] = [];
 
 	async create(data: ICreateProduct): Promise<IProduct> {
 		const products = new Product();
@@ -35,11 +35,16 @@ export default class FakeProductsRepository implements IProductsRepository {
 		return result;
 	}
 	async findAllByIds(products: IFindProducts[]): Promise<IProduct[]> {
-		const product = this.products.includes(products);
-		return product;
+		const products_id = products.map(e => e.id);
+		const filteredIds = this.products.filter(
+			e => products_id.indexOf(e.id) !== -1,
+		);
+		return filteredIds;
 	}
 	async save(product: IProduct): Promise<IProduct> {
-		throw new Error('Method not implemented.');
+		const productIndex = this.products.findIndex(e => e.id === product.id);
+		this.products[productIndex] = product;
+		return product;
 	}
 	async updateStock(products: IUpdateStockProduct[]): Promise<void> {
 		throw new Error('Method not implemented.');

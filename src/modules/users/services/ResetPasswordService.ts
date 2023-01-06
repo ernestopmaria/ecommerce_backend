@@ -5,6 +5,7 @@ import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { IUserTokensRepository } from '../domain/repositories/IUserTokensRepository';
 import { IResetPassword } from '../domain/models/IResetPassword';
+import { IUser } from '../domain/models/IUser';
 
 @injectable()
 class ResetPasswordService {
@@ -15,7 +16,7 @@ class ResetPasswordService {
 		@inject('UserTokensRepository')
 		private userTokensRepository: IUserTokensRepository,
 	) {}
-	public async execute({ token, password }: IResetPassword): Promise<void> {
+	public async execute({ token, password }: IResetPassword): Promise<IUser> {
 		const userToken = await this.userTokensRepository.findByToken(token);
 
 		if (!userToken) {
@@ -35,7 +36,8 @@ class ResetPasswordService {
 		}
 		user.password = await hash(password, 10);
 
-		await this.userRepository.save(user);
+		const userReturned = await this.userRepository.save(user);
+		return userReturned;
 	}
 }
 export default ResetPasswordService;

@@ -3,6 +3,8 @@ import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 import { IUsersRepository } from '../IUserRepository';
+import { IUser } from '../../models/IUser';
+import e from 'express';
 //import { IPaginateUser } from '../../models/IPaginateUser';
 
 class FakeUsersRepository implements IUsersRepository {
@@ -51,17 +53,17 @@ class FakeUsersRepository implements IUsersRepository {
 	} */
 
 	public async findByName(name: string): Promise<User | null> {
-		const user = this.users.find(user => user.name === name);
+		const user = this.users.filter(user => user.name === name)[0];
 		return user;
 	}
 
-	public async findById(id: string): Promise<User | null> {
-		const user = this.users.find(user => user.id === id);
+	public async findById(id: string): Promise<IUser | null> {
+		const user = this.users.filter(user => user.id === id)[0];
 		return user;
 	}
 
 	public async findByEmail(email: string): Promise<User | null> {
-		const user = this.users.find(user => user.email === email);
+		const user = this.users.filter(user => user.email === email)[0];
 		return user;
 	}
 }
