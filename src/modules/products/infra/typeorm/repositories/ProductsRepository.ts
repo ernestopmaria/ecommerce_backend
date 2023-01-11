@@ -4,7 +4,7 @@ import { IProductPaginate } from '@modules/products/domain/models/IProductPagina
 import { IUpdateStockProduct } from '@modules/products/domain/models/IUpdateStockProduct';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { dataSource } from '@shared/infra/typeorm';
-import { getRepository, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import Product from '../entities/Products';
 
 interface IFindProducts {

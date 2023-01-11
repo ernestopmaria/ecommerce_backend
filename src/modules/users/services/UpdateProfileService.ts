@@ -1,9 +1,9 @@
 import AppError from '@shared/errors/AppError';
-import User from '../infra/typeorm/entities/User';
 import { compare, hash } from 'bcryptjs';
 import { IUpdateProfile } from '../domain/models/IUpdateProfile';
 import { IUsersRepository } from '../domain/repositories/IUserRepository';
 import { inject, injectable } from 'tsyringe';
+import { IUser } from '../domain/models/IUser';
 
 @injectable()
 class UpdateProfileService {
@@ -17,7 +17,7 @@ class UpdateProfileService {
 		email,
 		password,
 		old_password,
-	}: IUpdateProfile): Promise<User> {
+	}: IUpdateProfile): Promise<IUser> {
 		const user = await this.userRepository.findById(user_id);
 
 		if (!user) {
@@ -36,6 +36,7 @@ class UpdateProfileService {
 
 		if (password && old_password) {
 			const checkOldPassword = await compare(old_password, user.password);
+
 			if (!checkOldPassword) {
 				throw new AppError('Senha antiga não está correcta');
 			}

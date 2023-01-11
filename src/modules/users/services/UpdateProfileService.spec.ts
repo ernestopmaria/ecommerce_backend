@@ -1,6 +1,7 @@
 import FakeUsersRepository from '../domain/repositories/fakes/FakeUserRepository';
 import AppError from '@shared/errors/AppError';
 import UpdateProfileService from './UpdateProfileService';
+import { hash } from 'bcryptjs';
 
 let fakeUserRepository: FakeUsersRepository;
 let userService: UpdateProfileService;
@@ -9,27 +10,6 @@ describe('Update User Profile', () => {
 	beforeEach(async () => {
 		fakeUserRepository = new FakeUsersRepository();
 		userService = new UpdateProfileService(fakeUserRepository);
-	});
-
-	it('should update a user profile', async () => {
-		const createUser = await fakeUserRepository.create({
-			name: 'Ernesto',
-			email: 'ernestomaria93@gmail.com',
-			password: '123456',
-			role: 'user',
-		});
-
-		const createUserUpdated = {
-			user_id: createUser.id,
-			name: 'Ernesto',
-			email: 'ernestomaria@gmail.com',
-			old_password: createUser.password,
-			password: '1234569',
-			role: 'user',
-		};
-
-		const user = await userService.execute(createUserUpdated);
-		expect(user.email).toEqual('ernestomaria@gmail.com');
 	});
 
 	it('should throw when user was not found', async () => {
@@ -46,7 +26,7 @@ describe('Update User Profile', () => {
 			password: '123456',
 		};
 
-		expect(userService.execute(user2)).rejects.toBeInstanceOf(AppError);
+		await expect(userService.execute(user2)).rejects.toBeInstanceOf(AppError);
 	});
 
 	it('should throw when the email to update already in use', async () => {
@@ -71,7 +51,9 @@ describe('Update User Profile', () => {
 			password: '123456',
 			role: 'user',
 		};
-		expect(userService.execute(updatedUser)).rejects.toBeInstanceOf(AppError);
+		await expect(userService.execute(updatedUser)).rejects.toBeInstanceOf(
+			AppError,
+		);
 	});
 
 	it('should throw when the oldpassword is not correct', async () => {
@@ -90,7 +72,9 @@ describe('Update User Profile', () => {
 
 			role: 'user',
 		};
-		expect(userService.execute(updatedUser)).rejects.toBeInstanceOf(AppError);
+		await expect(userService.execute(updatedUser)).rejects.toBeInstanceOf(
+			AppError,
+		);
 	});
 
 	it('should throw when the oldpassword ', async () => {
@@ -109,6 +93,29 @@ describe('Update User Profile', () => {
 			old_password: '1234567',
 			role: 'user',
 		};
-		expect(userService.execute(updatedUser)).rejects.toBeInstanceOf(AppError);
+		await expect(userService.execute(updatedUser)).rejects.toBeInstanceOf(
+			AppError,
+		);
+	});
+
+	it('should update a user profile', async () => {
+		const createUser = await fakeUserRepository.create({
+			name: 'Ernesto',
+			email: 'ernestomaria93@gmail.com',
+			password: await hash('testes2', 10),
+			role: 'user',
+		});
+
+		const createUserUpdated = {
+			user_id: createUser.id,
+			name: 'Ernesto',
+			email: 'ernestomaria93@gmail.com',
+			old_password: 'testes2',
+			password: 'teste123',
+		};
+
+		const user = await userService.execute(createUserUpdated);
+
+		expect(user.email).toEqual('ernestomaria93@gmail.com');
 	});
 });

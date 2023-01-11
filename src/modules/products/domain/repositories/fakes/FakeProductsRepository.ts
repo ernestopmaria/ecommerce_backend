@@ -46,8 +46,11 @@ export default class FakeProductsRepository implements IProductsRepository {
 		this.products[productIndex] = product;
 		return product;
 	}
-	async updateStock(products: IUpdateStockProduct[]): Promise<void> {
-		throw new Error('Method not implemented.');
+	async updateStock(product: IUpdateStockProduct[]): Promise<void> {
+		const productIndex = this.products.findIndex(
+			e => e.id === product.map(e => e.id)[0],
+		);
+		this.products[productIndex].quantity = product.map(e => e.quantity)[0];
 	}
 	async remove(product: IProduct): Promise<void> {
 		const productIndex = this.products.findIndex(e => e.id === product.id);

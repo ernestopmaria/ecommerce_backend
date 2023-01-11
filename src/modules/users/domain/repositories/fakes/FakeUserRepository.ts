@@ -4,7 +4,6 @@ import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 import User from '@modules/users/infra/typeorm/entities/User';
 import { IUsersRepository } from '../IUserRepository';
 import { IUser } from '../../models/IUser';
-import e from 'express';
 //import { IPaginateUser } from '../../models/IPaginateUser';
 
 class FakeUsersRepository implements IUsersRepository {
@@ -12,7 +11,6 @@ class FakeUsersRepository implements IUsersRepository {
 
 	public async create({ name, email, password }: ICreateUser): Promise<User> {
 		const user = new User();
-
 		user.id = randomUUID();
 		user.name = name;
 		user.email = email;
@@ -52,7 +50,7 @@ class FakeUsersRepository implements IUsersRepository {
 		return usersPaginate;
 	} */
 
-	public async findByName(name: string): Promise<User | null> {
+	public async findByName(name: string): Promise<IUser | null> {
 		const user = this.users.filter(user => user.name === name)[0];
 		return user;
 	}
@@ -62,7 +60,7 @@ class FakeUsersRepository implements IUsersRepository {
 		return user;
 	}
 
-	public async findByEmail(email: string): Promise<User | null> {
+	public async findByEmail(email: string): Promise<IUser | null> {
 		const user = this.users.filter(user => user.email === email)[0];
 		return user;
 	}

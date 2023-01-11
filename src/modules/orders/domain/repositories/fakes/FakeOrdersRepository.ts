@@ -1,16 +1,11 @@
 import { IOrdersRepository, SearchParams } from '../IOrdersRepository';
-import Order from '@modules/orders/infra/typeorm/entities/Order';
 import { ICreateOrder } from '../../models/ICreateOrder';
 import { IOrder } from '../../models/IOrder';
 import { IOrderPaginate } from '../../models/IOrderPaginate';
 import { randomUUID } from 'node:crypto';
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
-import Product from '@modules/products/infra/typeorm/entities/Products';
 
 class FakeOrdersRepository implements IOrdersRepository {
-	public orders: Order[] = [];
-	public customer: Customer;
-	public product: Product[];
+	public orders: IOrder[] = [];
 
 	public async findAll({
 		page,
@@ -30,23 +25,24 @@ class FakeOrdersRepository implements IOrdersRepository {
 		return this.orders.find(c => c.id === id) as unknown as null;
 	}
 
-	async createOrder({ customer, products }: ICreateOrder): Promise<Order> {
-		let order = this.orders.map((e: Order) => {
-			return {
+	async createOrder({ customer, products }: ICreateOrder): Promise<IOrder> {
+		const orderSerilazed: IOrder = {
+			id: randomUUID(),
+			order: 12,
+			customer: customer,
+			order_products: products.map(e => ({
 				id: randomUUID(),
-				order: this.orders.length,
-				customer: customer,
-				order_products: this.product.map(() => {
-					return {
-						products,
-					};
-				}),
-				created_at: e.created_at,
-				updated_at: e.updated_at,
-			};
-		});
+				product_id: e.product_id,
+				price: e.price,
+				quantity: e.quantity,
+			})),
+			created_at: new Date(),
+			updated_at: new Date(),
+		};
 
-		return order as unknown as Order;
+		this.orders.push(orderSerilazed);
+
+		return orderSerilazed;
 	}
 }
 

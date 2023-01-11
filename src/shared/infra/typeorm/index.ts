@@ -17,15 +17,24 @@ import { AddProductIdToOrdersProducts1668122574099 } from './migrations/16681225
 import { AddOrderFieldToOrders1671891299918 } from './migrations/1671891299918-AddOrderFieldToOrders';
 import { AddRoleToUsers1669366626802 } from './migrations/1669366626802-AddRoleToUsers';
 import { CreateCategoryTable1672825517020 } from './migrations/1672825517020-CreateCategoryTable';
+import { Category } from '@modules/products/infra/typeorm/entities/Category';
 
 export const dataSource = new DataSource({
 	type: 'postgres',
-	host: 'db',
+	host: 'localhost',
 	port: 5432,
 	username: 'postgres',
-	password: 'docker',
+	password: 'docker123',
 	database: 'apivendas',
-	entities: [User, UserToken, Customer, Order, OrdersProducts, Product],
+	entities: [
+		User,
+		UserToken,
+		Customer,
+		Order,
+		OrdersProducts,
+		Product,
+		Category,
+	],
 	migrations: [
 		CreateProducts1662228018905,
 		CreateUsers1662495827925,

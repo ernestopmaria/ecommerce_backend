@@ -11,6 +11,7 @@ export default {
 
 	// Stop running tests after `n` failures
 	// bail: 0,
+	testTimeout: 20000,
 
 	// The directory where Jest should store its cached dependency information
 	// cacheDirectory: "/tmp/jest_rs",

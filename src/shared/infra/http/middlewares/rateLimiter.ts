@@ -10,8 +10,8 @@ export default async function rateLimiter(
 ): Promise<void> {
 	try {
 		const redisClient = new Redis({
-			host: process.env.REDIS_HOST,
-			port: Number(process.env.REDIS_PORT),
+			host: 'localhost',
+			port: 6379,
 			password: process.env.REDIS_PASS,
 		});
 

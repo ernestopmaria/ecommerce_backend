@@ -7,6 +7,7 @@ import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import customersRouter from '@modules/customers/infra/http/routes/customer.routes';
 import ordersRouter from '@modules/orders/infra/http/routes/orders.routes';
 import dashboardRouter from '@modules/dashboard/routes/dashboard.routes';
+import categoriesRouter from '@modules/products/infra/http/routes/category.routes';
 
 const routes = Router();
 
@@ -17,6 +18,7 @@ routes.use('/password', passwordRouter);
 routes.use('/profile', profileRouter);
 routes.use('/customer', customersRouter);
 routes.use('/orders', ordersRouter);
+routes.use('/categories', categoriesRouter);
 routes.use('/dashboard', dashboardRouter);
 
 export default routes;

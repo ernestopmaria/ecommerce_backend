@@ -3,6 +3,7 @@ import FakeUsersRepository from '../domain/repositories/fakes/FakeUserRepository
 import FakeUserTokenRepository from '../domain/repositories/fakes/FakeUserTokenRepository';
 import AppError from '@shared/errors/AppError';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
+import { hash } from 'bcryptjs';
 
 let fakeUserRepository: FakeUsersRepository;
 let fakeUserTokensRepository: FakeUserTokenRepository;
@@ -24,15 +25,19 @@ describe('Send Forgot password', () => {
 			password: '123456',
 			role: 'user',
 		});
+
+		user.password = await hash(user.password, 10);
 		const email = user.email;
 		const resetedPassword = await userService.execute({ email });
 
-		expect(resetedPassword).toHaveProperty('email');
+		await expect(resetedPassword).toHaveProperty('email');
 	});
 
 	it('should throw when user does not exist', async () => {
 		const email = 'fake_email';
 
-		expect(userService.execute({ email })).rejects.toBeInstanceOf(AppError);
+		await expect(userService.execute({ email })).rejects.toBeInstanceOf(
+			AppError,
+		);
 	});
 });

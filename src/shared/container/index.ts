@@ -13,6 +13,8 @@ import UserTokensRepository from '@modules/users/infra/typeorm/repositories/User
 import '@modules/users/providers';
 import RedisCache from '../cache/RedisCacheProvider/implementations/RedisCache';
 import { IRedisProvider } from '@shared/cache/RedisCacheProvider/models/IRedisCache';
+import { ICategoriesRepository } from '../../modules/products/domain/repositories/ICategoriesRepository';
+import { CategoriesRepository } from '@modules/products/infra/typeorm/repositories/CategoriesRepository';
 
 container.registerSingleton<ICustomersRepository>(
 	'CustomerRepository',
@@ -36,3 +38,8 @@ container.registerSingleton<IUserTokensRepository>(
 );
 
 container.registerSingleton<IRedisProvider>('RedisCache', RedisCache);
+
+container.registerSingleton<ICategoriesRepository>(
+	'CategoriesRepository',
+	CategoriesRepository,
+);

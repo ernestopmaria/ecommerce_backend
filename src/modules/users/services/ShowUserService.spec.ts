@@ -32,6 +32,6 @@ describe('Show User', () => {
 		});
 		const id = 'fake_id';
 
-		expect(userService.execute({ id })).rejects.toBeInstanceOf(AppError);
+		await expect(userService.execute({ id })).rejects.toBeInstanceOf(AppError);
 	});
 });

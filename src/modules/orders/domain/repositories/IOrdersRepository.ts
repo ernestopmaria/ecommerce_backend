@@ -10,5 +10,5 @@ export type SearchParams = {
 export interface IOrdersRepository {
 	findAll({ page, skip, take }: SearchParams): Promise<IOrderPaginate>;
 	findById(id: string): Promise<IOrder | null>;
-	createOrder(data: ICreateOrder): Promise<IOrder>;
+	createOrder({ customer, products }: ICreateOrder): Promise<IOrder>;
 }
