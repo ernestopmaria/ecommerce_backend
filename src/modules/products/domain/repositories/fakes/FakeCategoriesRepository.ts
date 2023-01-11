@@ -22,7 +22,7 @@ export class FakeCategoriesRepository implements ICategoriesRepository {
 	async create(name: string): Promise<ICategory> {
 		const category: ICategory = {
 			id: randomUUID(),
-			name,
+			name: name,
 			created_at: new Date(),
 			updated_at: new Date(),
 		};

@@ -10,12 +10,9 @@ class ListCategoryService {
 		private categoryRepository: ICategoriesRepository,
 	) {}
 
-	public async execute(): Promise<ICategory[]> {
+	public async execute(): Promise<ICategory[] | null> {
 		const category = await this.categoryRepository.findAll();
 
-		if (!category) {
-			throw new AppError('Não há categorias registradas');
-		}
 		return category;
 	}
 }

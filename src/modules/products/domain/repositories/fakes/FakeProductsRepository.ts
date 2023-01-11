@@ -4,7 +4,6 @@ import { IProduct } from '../../models/IProduct';
 import { IProductPaginate } from '../../models/IProductPaginate';
 import { IUpdateStockProduct } from '../../models/IUpdateStockProduct';
 import { IProductsRepository } from '../IProductsRepository';
-import Product from '@modules/products/infra/typeorm/entities/Products';
 import { randomUUID } from 'node:crypto';
 import { SearchParams } from '@modules/customers/domain/repositories/ICustomersRepository';
 
@@ -12,9 +11,14 @@ export default class FakeProductsRepository implements IProductsRepository {
 	public products: IProduct[] = [];
 
 	async create(data: ICreateProduct): Promise<IProduct> {
-		const products = new Product();
-		products.id = randomUUID();
-		(products.name = data.name), (products.quantity = data.quantity);
+		const products: IProduct = {
+			id: randomUUID(),
+			name: data.name,
+			quantity: data.quantity,
+			price: data.price,
+			created_at: new Date(),
+			updated_at: new Date(),
+		};
 		this.products.push(products);
 		return products;
 	}
